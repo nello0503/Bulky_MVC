@@ -3,18 +3,21 @@ using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
-namespace BulkyWeb.Controllers
+namespace BulkyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public CategoryController(IUnitOfWork unitOfWork) {
+        private readonly IWebHostEnvironment _webhostEnvironment;
+        public CategoryController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        {
             _unitOfWork = unitOfWork;
+            _webhostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            List<Bulky.Models.Category> categoriesList = _unitOfWork.Category.GetAll().ToList();
+            List<Category> categoriesList = _unitOfWork.Category.GetAll().ToList();
 
             return View(categoriesList);
         }
@@ -25,25 +28,33 @@ namespace BulkyWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(Category obj, IFormFile? file)
         {
-           if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _webhostEnvironment.WebRootPath;
+                if(file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+                }
                 _unitOfWork.Category.Add(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Category created";
                 return RedirectToAction("Index");
             }
 
-           return View(obj);
+            return View(obj);
         }
 
         public IActionResult Edit(int? id)
         {
-            if(id == null || id== 0) {
+            if (id == null || id == 0)
+            {
                 return NotFound();
             }
 
-           var obj = _unitOfWork.Category.Get(x=>x.Id == id);
+            var obj = _unitOfWork.Category.Get(x => x.Id == id);
 
             return View(obj);
         }
@@ -71,7 +82,7 @@ namespace BulkyWeb.Controllers
             }
 
             var obj = _unitOfWork.Category.Get(x => x.Id == id);
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }

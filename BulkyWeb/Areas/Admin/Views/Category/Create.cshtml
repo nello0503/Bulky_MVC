@@ -1,6 +1,6 @@
 ﻿@model Category
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Create Category</h2>
@@ -12,9 +12,8 @@
             <span asp-validation-for="Name"></span>
         </div>
         <div class="mb-3 row">
-            <label asp-for="DisplayOrder" class="p-0"></label>
-            <input asp-for="DisplayOrder"  class="form-control" />
-            <span asp-validation-for="DisplayOrder"></span>
+            <label asp-for="ImgUrl" class="p-0"></label>
+            <input type="file" class="form-control" />
         </div>
         <div class="row">
             <div class="col-6">

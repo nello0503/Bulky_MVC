@@ -1,27 +1,29 @@
-﻿@model Category
+﻿@model Product
 
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Edit Category</h2>
+            <h2 class="text-primary">Edit Product</h2>
             <hr />
         </div>
+      
         <div class="mb-3 row">
             <label asp-for="Name" class="p-0"></label>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name"></span>
         </div>
         <div class="mb-3 row">
-            <label asp-for="DisplayOrder" class="p-0"></label>
-            <input asp-for="DisplayOrder" class="form-control" />
-            <span asp-validation-for="DisplayOrder"></span>
+            <label asp-for="Description" class="p-0"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description"></span>
         </div>
+       
         <div class="row">
             <div class="col-6">
                 <button type="submit" class="btn btn-primary form-control">Edit</button>
             </div>
             <div class="col-6">
-                <a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary border form-control">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary border form-control">
                     Back to list
                 </a>
             </div>
